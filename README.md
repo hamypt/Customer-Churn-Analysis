@@ -1,2 +1,3 @@
-# Customer-Churn-Retention-Strategy
-SQL project using MySQL
+# Customer Churn Analysis and Retention Strategy   
+
+This project
