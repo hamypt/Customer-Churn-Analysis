@@ -71,7 +71,7 @@ CREATE TABLE payments (
 
 -- IMPORT DATA FROM CSV FILE INTO TABLE 'CUSTOMERS'
 
-LOAD DATA LOCAL INFILE '/Users/mypham/Documents/SQL/customer_churn/Telco_customer_churn.csv'
+LOAD DATA LOCAL INFILE '/pathname/Telco_customer_churn.csv'
 INTO TABLE customers
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n'
