@@ -1,7 +1,7 @@
 # Customer Churn Analysis and Retention Strategy   
 
-This project analyzes consumer behavior and identify patterns to predict and decrease customer churn for a subscription-based tech company.
-*Using Telco Customer Churn dataset from IBM community: [https://www.kaggle.com/datasets/blastchar/telco-customer-churn?resource=download](https://community.ibm.com/community/user/businessanalytics/blogs/steven-macko/2019/07/11/telco-customer-churn-1113)*  
+This project analyzes consumer behavior and identify patterns to predict and decrease customer churn for a subscription-based tech company. 
+*Using Telco Customer Churn dataset from IBM community: https://community.ibm.com/community/user/businessanalytics/blogs/steven-macko/2019/07/11/telco-customer-churn-1113*   
 
 The steps include:
   - Data preparation: Clean, re-structure and import data into MySQL
