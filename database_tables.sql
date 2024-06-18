@@ -1,4 +1,3 @@
-
 CREATE TABLE customers (
     customer_id VARCHAR(50) PRIMARY KEY,
     country VARCHAR(50),
@@ -59,15 +58,6 @@ CREATE TABLE subscriptions (
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
 
-CREATE TABLE payments (
-    payment_id INT PRIMARY KEY AUTO_INCREMENT,
-    subscription_id INT,
-    payment_date DATE,
-    amount DECIMAL(10, 2),
-    payment_method VARCHAR(50),
-    FOREIGN KEY (subscription_id) REFERENCES subscriptions(subscription_id)
-);
-
 
 -- IMPORT DATA FROM CSV FILE INTO TABLE 'CUSTOMERS'
 
@@ -83,7 +73,7 @@ monthly_charge, @total_charges, churn_label, churn_score, cltv, churn_reason)
 SET total_charges = NULLIF(@total_charges, ' ');
 
 
--- GENERATE SYNTHETIC DATA FOR THE OTHER 4 TABLES WITH THE 'WHERE' CLAUSE
+-- GENERATE SYNTHETIC DATA FOR THE OTHER 3 TABLES WITH THE 'WHERE' CLAUSE
 
 INSERT INTO support (customer_id, issue_date, issue_type, resolution_time, satisfaction_score)
 SELECT 
@@ -110,23 +100,27 @@ LIMIT 7043;
 
 INSERT INTO subscriptions (customer_id, plan_type, start_date, end_date, status)
 SELECT 
-    customer_id,
+    c.customer_id,
     ELT(FLOOR(1 + (RAND() * 3)), 'Basic', 'Standard', 'Premium') AS plan_type,
-    CURDATE() - INTERVAL FLOOR(RAND() * 730) DAY AS start_date,
-    CURDATE() - INTERVAL FLOOR(RAND() * 365) DAY AS end_date,
-    ELT(FLOOR(1 + (RAND() * 3)), 'Active', 'Inactive', 'Cancelled') AS status
-FROM customers
-WHERE contract IN ('Month-to-Month', 'One Year', 'Two Year')
-ORDER BY RAND()
-LIMIT 7043;
-
-INSERT INTO payments (subscription_id, payment_date, amount, payment_method)
-SELECT 
-    s.subscription_id,
-    CURDATE() - INTERVAL FLOOR(RAND() * 365) DAY AS payment_date,
-    ROUND(10 + (RAND() * 90), 2) AS amount,
-    ELT(FLOOR(1 + (RAND() * 3)), 'Bank Withdrawal', 'Credit Card', 'Mailed Check') AS payment_method
-FROM subscriptions AS s
-ORDER BY RAND()
-LIMIT 7043;
+    sub.start_date,
+    CASE 
+        WHEN c.churn_label = 1 THEN sub.start_date + INTERVAL FLOOR(30 + (RAND() * 335)) DAY -- Ensure end date is at least 30 days after start date
+        ELSE sub.start_date + INTERVAL FLOOR(30 + (RAND() * 335)) DAY
+    END AS end_date,
+    CASE 
+        WHEN c.churn_label = 1 THEN 'Cancelled' -- Set status to Cancelled for churned customers
+        ELSE ELT(FLOOR(1 + (RAND() * 2)), 'Active', 'Inactive') -- Random status for active customers
+    END AS status
+FROM 
+    customers AS c
+JOIN (
+    SELECT 
+        customer_id, 
+        DATE('2022-01-01') + INTERVAL FLOOR(RAND() * 881) DAY AS start_date -- Generate random start date within the fixed period
+    FROM customers
+    WHERE contract IN ('Month-to-Month', 'One Year', 'Two Year')
+    ORDER BY RAND()
+    LIMIT 7043
+) AS sub
+ON c.customer_id = sub.customer_id;
 
