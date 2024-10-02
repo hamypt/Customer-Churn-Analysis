@@ -104,7 +104,7 @@ SELECT
     ELT(FLOOR(1 + (RAND() * 3)), 'Basic', 'Standard', 'Premium') AS plan_type,
     sub.start_date,
     CASE 
-        WHEN c.churn_label = 1 THEN sub.start_date + INTERVAL FLOOR(30 + (RAND() * 335)) DAY -- Ensure end date is at least 30 days after start date
+        WHEN c.churn_label = 1 THEN sub.start_date + INTERVAL FLOOR(30 + (RAND() * 335)) DAY -- Make end date at least 30 days after start date
         ELSE sub.start_date + INTERVAL FLOOR(30 + (RAND() * 335)) DAY
     END AS end_date,
     CASE 
