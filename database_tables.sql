@@ -109,7 +109,7 @@ SELECT
     END AS end_date,
     CASE 
         WHEN c.churn_label = 1 THEN 'Cancelled' -- Set status to Cancelled for churned customers
-        ELSE ELT(FLOOR(1 + (RAND() * 2)), 'Active', 'Inactive') -- Random status for active customers
+        ELSE ELT(FLOOR(1 + (RAND() * 2)), 'Active', 'Inactive') -- Set random status for active customers
     END AS status
 FROM 
     customers AS c
