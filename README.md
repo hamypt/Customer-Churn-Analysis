@@ -7,5 +7,4 @@ The steps include:
   - Data preparation: Clean, re-structure and import data into MySQL
   - Data modeling: Design an ER diagram to prepare for a schema (+generate synthetic data for additional tables) 
   - SQL query development: Write and run queries from basic to advanced
-  - Data visualization: Develop graphs using Tableau
-  - Business insights: Identify main reasons for customer churn, determine the most and least profitable segments, analyse the effectiveness of different subscription plans, recommend strategies for customer retention
+  - Business insights: Identify main reasons for customer churn, determine the most and least profitable segments, analyse the effectiveness of different subscription plans
